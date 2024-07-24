@@ -2,7 +2,7 @@ import streamlit as st
 import subprocess
 import sys
 
-subprocess.run([f"{sys.executable}", "-m uvicorn fastapi_app:app --host 0.0.0.0 --port 8080 --proxy-headers"])
+subprocess.run([f"{sys.executable}", "-m", "uvicorn", "fastapi_app:app", "--host", "0.0.0.0", "--port", "8080", "--proxy-headers"])
 
 st.set_page_config(
     page_title="Home - DEEP Naming Tool",
