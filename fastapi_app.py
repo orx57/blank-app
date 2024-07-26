@@ -1,4 +1,6 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
+
 import re
 
 app = FastAPI()
@@ -14,6 +16,23 @@ async def validate(asset_name: str):
         match = pattern.match(asset_name)
         if match:
             decomposition = match.groupdict()
-            return {asset_name: decomposition}
+            return {
+                "asset": decomposition,
+                "changed": False,
+                "failed": False,
+                "is_valid": True,
+                "msg": "Asset name checked successfully"
+            }
 
-    raise HTTPException(status_code=400, detail="Invalid asset name format")
+    return JSONResponse(
+        status_code=400,
+        content={
+                "asset": {
+                    "asset_name": asset_name
+                },
+                "changed": False,
+                "failed": False,
+                "is_valid": False,
+                "msg": "Invalid asset name format"
+            },
+    )
