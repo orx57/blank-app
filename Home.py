@@ -1,8 +1,14 @@
-import streamlit as st
+import socket
 import subprocess
 import sys
+import streamlit as st
 
-subprocess.run([f"{sys.executable}", "-m", "uvicorn", "fastapi_app:app", "--host", "0.0.0.0", "--port", "8080", "--proxy-headers", "--reload"])
+def check_port_in_use(port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(('localhost', port)) == 0
+
+if not check_port_in_use(8080):
+    subprocess.run([f"{sys.executable}", "-m", "uvicorn", "fastapi_app:app", "--host", "0.0.0.0", "--port", "8080", "--proxy-headers", "--reload"])
 
 st.set_page_config(
     page_title="Home - DEEP Naming Tool",
