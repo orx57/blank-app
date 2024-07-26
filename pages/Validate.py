@@ -1,14 +1,11 @@
-import streamlit as st
-import json
 import requests
+import streamlit as st
 
 st.set_page_config(
     page_title="Validate - DEEP Naming Tool",
     page_icon=":material/rule:",
 )
-
 st.markdown("# Validate Demo")
-
 st.sidebar.markdown(
     """
     ## Validate Demo
@@ -22,25 +19,25 @@ st.sidebar.markdown(
     - :x: A0001PPXY01
     """
 )
-
 st.markdown(
-    '''
+    """
     This demo illustrates a validation with the API.   
     Enjoy!
-    '''
+    """
 )
 
-asset_name = st.text_input("Asset name to validate:")
-
-if asset_name: 
+def validate_asset_name(asset_name):
     res = requests.get(url="http://localhost:8080/validate/" + asset_name)
+    return res.json()['is_valid'], res.text
 
-    if res.json()['is_valid']:
+asset_name = st.text_input("Asset name to validate:")
+if asset_name: 
+    is_valid, response = validate_asset_name(asset_name)
+    if is_valid:
         st.markdown("Asset name is :green[valid] :heavy_check_mark:")
     else:
-      st.markdown("Asset name is :red[invalid] :x:")
-
+        st.markdown("Asset name is :red[invalid] :x:")
     st.write(f"Response from API:")
-    st.json(res.text)
+    st.json(response)
 else:
-   st.markdown("Enter an asset name...")
+    st.markdown("Enter an asset name...")
