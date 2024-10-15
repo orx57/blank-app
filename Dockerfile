@@ -4,7 +4,7 @@ RUN apk --no-cache --update add tzdata
 
 WORKDIR /code
 
-COPY ./requirements.txt /code/requirements.txt
+COPY /app/requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
